@@ -151,6 +151,31 @@ def read_file(file_name):
     return df
 
 
+# Функция для проверки повторяющихся строк
+def check_duplicates():
+    connection = sqlite3.connect('Movies.db')
+    cursor = connection.cursor()
+    query = """SELECT num, movieId FROM Movies group by num having count(*)>1"""
+    cursor.execute(query)
+    res = cursor.fetchall()
+    print('Повторяющихся строк - {}'.format(len(res)))
+    connection.commit()
+    cursor.close()
+    return res
+
+
+# Удаление повторов
+def delete_duplicates(ids):
+    sqlite_connection = sqlite3.connect('Movies.db')
+    cursor = sqlite_connection.cursor()
+    query = """DELETE from Movies where movieId = ?"""
+    cursor.executemany(query, ids)
+    sqlite_connection.commit()
+    print("Удалено записей:", cursor.rowcount)
+    sqlite_connection.commit()
+    cursor.close()
+
+
 # Объединяем таблицы с английскими и русскими названиями
 movies_all = merge_eng_ru()
 # Считываем из файла информацию о фильмах 2010 года
@@ -165,3 +190,9 @@ movies_all = ru_data_handler(movies_all)
 create_db(movies_all)
 # Вставляем в БД строки с фильмами 2020 года
 insert_into_db(ru_data_handler(movies_2020))
+# Проверяем базу данных на наличие повторяющихся строк
+dupl = check_duplicates()
+# Извлекаем только movieId для каждой повторяющейся строки
+all_dupls = [(el[1],) for el in dupl]
+# Удаляем дубликаты
+delete_duplicates(all_dupls)
