@@ -1,0 +1,30 @@
+Beginning;Драма;Начало
+;Драма;Северный ветер
+The Father;Драма;Отец
+Quo Vadis, Aida?;Война;Куда ты идешь, Аида?
+Wolfwalkers;Мультфильмы;Легенда о волках
+Soul;Мультфильмы;Душа
+The Trial of the Chicago 7;Драма;Суд над чикагской семёркой
+Another Round;Драма;Еще по одной
+Promising Young Woman;Детектив;Девушка, подающая надежды
+Zappa;Биографический;Заппа
+Nomadland;Драма;Земля кочевников
+Tenet;Боевик;Довод
+Gunda;Документальный;Гунда
+Freaks Out;Драма;Отчаянные мстители
+One Night in Miami;Драма;Одна ночь в Майами
+Fear City: New York vs the Mafia;Документальный;Город страха: Нью- Йорк против мафии
+Pieces of a Woman;Драма;Фрагменты женщины
+Greyhound;Боевик;Грейхаунд
+Ma Rainey's Black Bottom;Драма;Ма Рэйни: Мать блюза
+The Human Voice;Драма;Человеческий голос
+Felkészülés meghatározatlan ideig tartó együttlétre;Драма;Подготовка, чтобы быть вместе неопределённое количество времени
+Mandibles;Комедия;Жвалы
+I'm Thinking of Ending Things;Драма;Думаю, как всё закончить
+Never Gonna Snow Again;Драма;Снега больше не будет
+Black Bear;Драма;Чёрный медведь
+I Care a Lot;Комедия;Аферистка
+;Комедия;Глубже!
+Rifkin's Festival;Комедия;Фестиваль Рифкина
+Relic;Детектив;Реликвия
+Birds of Prey;Боевик;Хищные птицы: Потрясающая история Харли Квинн
