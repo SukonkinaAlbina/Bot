@@ -1,11 +1,11 @@
 import time
 from bs4 import BeautifulSoup as bs
 import requests
-from Settings import CITE
+from Settings import SITE
 
 for j in range(120):
     time.sleep(10)
-    r = requests.get(CITE + str(j))
+    r = requests.get(SITE + str(j))
     parse = bs(r.text, features="html.parser")
     all_divs = parse.find_all('div', class_="film_list")
     titles_ru = [x['title'] for x in all_divs]
