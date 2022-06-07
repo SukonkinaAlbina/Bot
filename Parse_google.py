@@ -97,8 +97,33 @@ def get_film_number_from_link(link):
 def from_eng_to_ru():
     df = pd.read_csv('Информация о фильмах/movies.csv', sep=',')
     movies_df = data_handler(df)
-    for i in range(movies_df.shape[0]):
-        with open('Информация о фильмах/movies_ru_пример.txt', 'a', encoding="utf-8") as f:
+    with open('Информация о фильмах/movies_ru_пример.txt', 'a', encoding="utf-8") as f:
+        for i in range(30):
             movie_id = str(movies_df.loc[i, 'movieId'])
             movie, year = movies_df.loc[i, ['title', 'year']]
             f.write(movie_id + ';' + movie + ';' + ';'.join(make_query_from_movie(movie, year)) + '\n')
+
+
+# Обработка сырых данных (по годам)
+def handle_data_from_file(year):
+    df = pd.read_csv('Информация о фильмах/films-' + str(year) + '_сырые.txt', sep=';', header=None, index_col=None,
+                     encoding='utf-8')
+    df = pd.DataFrame(df)
+    df.columns = ['title', 'genres', 'title_ru']
+    df['title'] = df['title'].fillna(df['title_ru'])
+    with open('Информация о фильмах/films-' + str(year) + '_пример.txt', 'a', encoding="utf-8") as f:
+        for i in range(df.shape[0]):
+            df.loc[i, 'movieId'] = str(year) + '-' + str(i)
+            movie, year = df.loc[i, 'title'], str(year)
+            title_ru, rating, num = make_query_from_movie(movie, year)
+            if str(int(year) - 1) in title_ru:
+                year = str(int(year) - 1)
+            if str(int(year) + 1) in title_ru:
+                year = str(int(year) + 1)
+            movieId, title_eng, genres = df.loc[i, ['movieId', 'title', 'genres']]
+            f.write(';'.join([movieId, title_eng, title_ru, year, genres, rating, num]) + '\n')
+
+
+from_eng_to_ru()
+handle_data_from_file(2010)
+handle_data_from_file(2020)
