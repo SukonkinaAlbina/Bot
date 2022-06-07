@@ -78,7 +78,7 @@ def get_eng_genre_name(data_frame):
                        'Мюзикл', 'Детектив', 'Романтический', 'Научно-фантастический', 'Триллер', \
                        'Военный', 'Вестерн']
     dict_genres = dict(zip(russian_version, unique_genres))
-    save_obj(dict_genres, 'genres_ru_eng')
+    save_obj(dict_genres, 'Информация о фильмах/genres_ru_eng')
     return dict_genres
 
 
@@ -132,9 +132,9 @@ def check_count():
 
 # Объединение баз данных с данными на английском и на русском
 def merge_eng_ru():
-    df = pd.read_csv('movies.csv')
+    df = pd.read_csv('Информация о фильмах/movies.csv')
     movies_eng = data_handler(df)
-    df_1 = pd.read_csv('movies_ru_пример.txt', sep=';', header=None, index_col=None, encoding='utf-8')
+    df_1 = pd.read_csv('Информация о фильмах/movies_ru_пример.txt', sep=';', header=None, index_col=None, encoding='utf-8')
     df_1.columns = ['movieId', 'title_eng', 'title_ru', 'rating', 'num']
     res = df_1.merge(movies_eng, how='inner')
     res = res.loc[:, ['movieId', 'title_eng', 'title_ru', 'year', 'genres', 'rating', 'num']]
@@ -179,9 +179,9 @@ def delete_duplicates(ids):
 # Объединяем таблицы с английскими и русскими названиями
 movies_all = merge_eng_ru()
 # Считываем из файла информацию о фильмах 2010 года
-movies_2010 = read_file('films-2010_пример.txt')
+movies_2010 = read_file('Информация о фильмах/films-2010_пример.txt')
 # Считываем из файла информацию о фильмах 2020 года
-movies_2020 = read_file('films-2020_пример.txt')
+movies_2020 = read_file('Информация о фильмах/films-2020_пример.txt')
 # Добавляем фильмы 2010 года в таблицу
 movies_all = pd.concat([movies_all, movies_2010], ignore_index=True)
 # Обрабатываем данные, чтобы привести их к общему виду
