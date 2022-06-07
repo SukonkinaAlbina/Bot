@@ -93,13 +93,12 @@ def get_film_number_from_link(link):
         return link[ind_1 + 5:ind_1 + 5 + ind_2]
 
 
-df = pd.read_csv('Информация о фильмах/movies.csv', sep=',')
-movies_df = data_handler(df)
-start = time.time()
-for i in range(movies_df.shape[0]):
-    with open('Информация о фильмах/movies_ru_пример.txt', 'a', encoding="utf-8") as f:
-        movie_id = str(movies_df.loc[i, 'movieId'])
-        movie, year = movies_df.loc[i, ['title', 'year']]
-        f.write(movie_id + ';' + movie + ';' + ';'.join(make_query_from_movie(movie, year)) + '\n')
-print(time.time() - start)
-
+# Обработка информации о фильмах из исходной таблицы.
+def from_eng_to_ru():
+    df = pd.read_csv('Информация о фильмах/movies.csv', sep=',')
+    movies_df = data_handler(df)
+    for i in range(movies_df.shape[0]):
+        with open('Информация о фильмах/movies_ru_пример.txt', 'a', encoding="utf-8") as f:
+            movie_id = str(movies_df.loc[i, 'movieId'])
+            movie, year = movies_df.loc[i, ['title', 'year']]
+            f.write(movie_id + ';' + movie + ';' + ';'.join(make_query_from_movie(movie, year)) + '\n')
