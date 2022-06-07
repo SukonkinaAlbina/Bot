@@ -1,9 +1,4 @@
-/Информация о фильмах/
-Информация о фильмах/movies_ru_пример.txt
 Settings.py
 /Выбор фильма.gif
 /Случайный фильм.gif
 /Фильм не найден.gif
-Movies.db
-.gitignore
-Parse_years.py
