@@ -84,7 +84,7 @@ def get_eng_genre_name(data_frame):
 
 # перевести названия жанров на русский
 def translate_genres_into_rus(genres):
-    genres_load = load_obj('genres_ru_eng')
+    genres_load = load_obj('Информация о фильмах/genres_ru_eng')
     genres = genres.split('|')
     for i, genre in enumerate(genres):
         for key, value in genres_load.items():
