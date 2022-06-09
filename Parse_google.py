@@ -117,11 +117,13 @@ def handle_data_from_file(year):
             movie, year = df.loc[i, 'title'], str(year)
             title_ru, rating, num = make_query_from_movie(movie, year)
             if str(int(year) - 1) in title_ru:
-                year = str(int(year) - 1)
-            if str(int(year) + 1) in title_ru:
-                year = str(int(year) + 1)
+                new_year = str(int(year) - 1)
+            elif str(int(year) + 1) in title_ru:
+                new_year = str(int(year) + 1)
+            else:
+                new_year = year
             movieId, title_eng, genres = df.loc[i, ['movieId', 'title', 'genres']]
-            f.write(';'.join([movieId, title_eng, title_ru, year, genres, rating, num]) + '\n')
+            f.write(';'.join([movieId, title_eng, title_ru, new_year, genres, rating, num]) + '\n')
 
 
 from_eng_to_ru()
