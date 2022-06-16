@@ -45,6 +45,7 @@ def ru_data_handler(data_frame):
     data_frame = data_frame[data_frame['num'] != 0]
     data_frame['genres'].replace('Война', 'Военный')
     data_frame['genres'].replace('Романтика', 'Романтический')
+    data_frame['genres'].replace('Нуар', 'Фильм-нуар')
     return data_frame
 
 
@@ -99,7 +100,7 @@ def create_db(data_frame):
     cursor = connection.cursor()
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Movies
-    (movieId TEXT, title_eng TEXT, title_ru TEXT, year INT, genres TEXT, rating FLOAT, num INT)
+    (movieId TEXT, title_eng TEXT, title_ru TEXT, year INT, genres TEXT, rating FLOAT, num INT, age_limit TEXT)
     ''')
     data_frame.to_sql('Movies', connection, if_exists='append', index=False)
     connection.commit()
@@ -135,9 +136,10 @@ def merge_eng_ru():
     df = pd.read_csv('Информация о фильмах/movies.csv')
     movies_eng = data_handler(df)
     df_1 = pd.read_csv('Информация о фильмах/movies_ru_пример.txt', sep=';', header=None, index_col=None, encoding='utf-8')
-    df_1.columns = ['movieId', 'title_eng', 'title_ru', 'rating', 'num']
-    res = df_1.merge(movies_eng, how='inner')
-    res = res.loc[:, ['movieId', 'title_eng', 'title_ru', 'year', 'genres', 'rating', 'num']]
+    df_1.columns = ['movieId', 'title_eng', 'title_ru', 'year', 'genres', 'rating', 'num', 'age_limit']
+    res = df_1.merge(movies_eng, how='inner', left_on='movieId', right_on='movieId')
+    res = res.loc[:, ['movieId', 'title_eng', 'title_ru', 'year_x', 'genres_x', 'rating', 'num', 'age_limit']]
+    res = res.rename(columns={'year_x' : 'year', 'genres_x' : 'genres'})
     return res
 
 
@@ -146,7 +148,7 @@ def read_file(file_name):
     df = pd.read_csv(file_name, sep=';', header=None, index_col=None,
                      encoding='utf-8')
     df = pd.DataFrame(df)
-    df.columns = ['movieId', 'title_eng', 'title_ru', 'year', 'genres', 'rating', 'num']
+    df.columns = ['movieId', 'title_eng', 'title_ru', 'year', 'genres', 'rating', 'num', 'age_limit']
     df['rating'] = df['rating'].astype('str')
     return df
 
@@ -188,8 +190,10 @@ movies_all = pd.concat([movies_all, movies_2010], ignore_index=True)
 movies_all = ru_data_handler(movies_all)
 # Создаём базу данных на основе полученной таблицы
 create_db(movies_all)
+check_count()
 # Вставляем в БД строки с фильмами 2020 года
 insert_into_db(ru_data_handler(movies_2020))
+check_count()
 # Проверяем базу данных на наличие повторяющихся строк
 dupl = check_duplicates()
 # Извлекаем только movieId для каждой повторяющейся строки
