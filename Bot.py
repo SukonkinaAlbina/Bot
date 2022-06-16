@@ -7,7 +7,7 @@ from Settings import TG_TOKEN
 
 # Стандартный запрос к базе данных
 def select_default():
-    sel = 'SELECT DISTINCT title_ru, year, rating, num, genres FROM Movies'
+    sel = 'SELECT DISTINCT title_ru, year, rating, num, genres, age_limit FROM Movies'
     return sel
 
 
@@ -183,13 +183,17 @@ def random_movie(message):
 # Вывод результатов поиска в виде сообщения
 def output(chat_id, result):
     if result:
+        if result[0][5] != '0':
+            film = result[0][0] + ' (' + result[0][5] + ')'
+        else:
+            film = result[0][0]
         link = 'http://kinopoisk.ru/film/' + str(result[0][3])
         if result[0][2]:
             text = 'Фильм: {}\nГод: {}\nРейтинг Кинопоиска: {}\nЖанр(-ы): {}\nСсылка на Кинопоиск: {}' \
-                .format(result[0][0], result[0][1], result[0][2], result[0][4], link)
+                .format(film, result[0][1], result[0][2], result[0][4], link)
         else:
             text = 'Фильм: {}\nГод: {}\nЖанр(-ы): {}\nСсылка на Кинопоиск: {}' \
-                .format(result[0][0], result[0][1], result[0][4], link)
+                .format(film, result[0][1], result[0][4], link)
     else:
         text = 'Увы! По Вашему запросу ничего не найдено. Попробуйте изменить параметры поиска.'
     bot.send_message(chat_id, text)
