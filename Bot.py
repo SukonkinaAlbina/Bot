@@ -3,6 +3,7 @@ from telebot import types
 import sqlite3
 import random
 from Settings import TG_TOKEN
+from Film_model import Film
 
 
 # Стандартный запрос к базе данных
@@ -177,26 +178,9 @@ def random_movie(message):
     # Выбирает случайный фильм из БД
     result = selection([[] for i in range(3)])
     # Выводит информацию о фильме в виде сообщения
-    output(message.chat.id, result)
-
-
-# Вывод результатов поиска в виде сообщения
-def output(chat_id, result):
-    if result:
-        if result[0][5] != '0':
-            film = result[0][0] + ' (' + result[0][5] + ')'
-        else:
-            film = result[0][0]
-        link = 'http://kinopoisk.ru/film/' + str(result[0][3])
-        if result[0][2]:
-            text = 'Фильм: {}\nГод: {}\nРейтинг Кинопоиска: {}\nЖанр(-ы): {}\nСсылка на Кинопоиск: {}' \
-                .format(film, result[0][1], result[0][2], result[0][4], link)
-        else:
-            text = 'Фильм: {}\nГод: {}\nЖанр(-ы): {}\nСсылка на Кинопоиск: {}' \
-                .format(film, result[0][1], result[0][4], link)
-    else:
-        text = 'Увы! По Вашему запросу ничего не найдено. Попробуйте изменить параметры поиска.'
-    bot.send_message(chat_id, text)
+    film = Film(result)
+    txt = film.output()
+    bot.send_message(message.chat.id, txt)
 
 
 # Изменение текста сообщения
@@ -227,7 +211,7 @@ def get_values_need(call, values=None, values_need=None):
 def check_callback_data(call):
     chat_id = call.message.chat.id
     if 'Далее' in call.data or 'Пропустить' in call.data:
-        print(full_data[chat_id])
+        #print(full_data[chat_id])
         i = int(call.data[-1])
         if 'Пропустить' in call.data:
             full_data[chat_id][i - 1].clear()
@@ -236,7 +220,9 @@ def check_callback_data(call):
         if i == 3:
             edit_message_text(call)
             result = selection(full_data[chat_id])
-            output(chat_id, result)
+            film = Film(result)
+            txt = film.output()
+            bot.send_message(chat_id, txt)
     else:
         i = int(key_from_dict_value(full_info, call.data))
         vals = get_values_need(call, full_info[i], full_data[chat_id][i - 1])
